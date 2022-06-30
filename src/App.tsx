@@ -1,26 +1,152 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
 
-function App() {
+import { Header, Panel, TodoList, Loader } from "./components";
+
+export type Todo = {
+  id: number;
+  name: string;
+  description: string;
+  checked: boolean;
+};
+
+let filter: boolean = true;
+let maxId: number = 1;
+
+export const App: React.FC = () => {
+  const [editTodoId, setEditTodoId] = React.useState<number | null>(null);
+  const [todoList, setTodoList] = React.useState<Todo[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+
+  useEffect(() => {
+    fetch("https://62b841c8f4cb8d63df5aec8a.mockapi.io/api/v1/todo")
+      .then((response) => response.json())
+      .then((todoList) => {
+        setTodoList(todoList);
+        setLoading(false);
+        console.log(todoList);
+      });
+  }, []);
+
+  const onClickFilter = () => {
+    const sortTodoList = [...todoList].sort((x, y) => {
+      if (filter === true) {
+        return x.checked === y.checked ? 0 : x.checked ? -1 : 1;
+      } else {
+        return x.checked === y.checked ? 0 : x.checked ? 1 : -1;
+      }
+    });
+    setTodoList(sortTodoList);
+    filter = !filter;
+  };
+
+  const onEdit = (id: Todo["id"]) => {
+    setEditTodoId(id);
+  };
+
+  const onDeleteTodo = (id: Todo["id"]) => {
+    setTodoList(todoList.filter((todo) => todo.id !== id));
+    fetch(`https://62b841c8f4cb8d63df5aec8a.mockapi.io/api/v1/todo/${id}`, {
+      method: "DELETE",
+    });
+  };
+
+  const onAddTodo = ({ name, description }: Omit<Todo, "id" | "checked">) => {
+    if (todoList.length > 0)
+      maxId = Math.max(...todoList.map((todo) => todo.id)) + 1;
+    setTodoList([
+      ...todoList,
+      { id: maxId, description, name, checked: false },
+    ]);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: maxId, description, name, checked: false }),
+    };
+    fetch(
+      "https://62b841c8f4cb8d63df5aec8a.mockapi.io/api/v1/todo",
+      requestOptions
+    );
+
+    console.log(todoList);
+  };
+
+  const onCheckTodo = (id: Todo["id"]) => {
+    setTodoList(
+      todoList.map((todo) => {
+        if (todo.id === id) {
+          const requestOptions = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ checked: !todo.checked }),
+          };
+          fetch(
+            `https://62b841c8f4cb8d63df5aec8a.mockapi.io/api/v1/todo/${id}`,
+            requestOptions
+          );
+          return { ...todo, checked: !todo.checked };
+        }
+        return todo;
+      })
+    );
+  };
+
+  const onChangeTodo = ({
+    name,
+    description,
+  }: Omit<Todo, "id" | "checked">) => {
+    setTodoList(
+      todoList.map((todo) => {
+        if (todo.id === editTodoId) {
+          const requestOptions = {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, description }),
+          };
+          fetch(
+            `https://62b841c8f4cb8d63df5aec8a.mockapi.io/api/v1/todo/${editTodoId}`,
+            requestOptions
+          );
+          return { ...todo, name, description };
+        }
+        return todo;
+      })
+    );
+    setEditTodoId(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box
+      marginTop={5}
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      alignContent="center"
+    >
+      <Box display="flex" flexDirection="column" width="500px">
+        <Header todoCount={todoList.length} />
+        <Panel mode="add" onAddTodo={onAddTodo} onClickFilter={onClickFilter} />
+        {loading && <Loader />}
+        {todoList.length ? (
+          <TodoList
+            editTodoId={editTodoId}
+            todoList={todoList}
+            onDeleteTodo={onDeleteTodo}
+            onCheckTodo={onCheckTodo}
+            onEdit={onEdit}
+            onChangeTodo={onChangeTodo}
+          />
+        ) : loading ? null : (
+          <Typography
+            sx={{ fontSize: 35 }}
+            variant="h1"
+            component="h1"
+            gutterBottom
+          >
+            No Todo
+          </Typography>
+        )}
+      </Box>
+    </Box>
   );
-}
-
-export default App;
+};
