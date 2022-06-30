@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 
-import type { Todo } from '../../App';
+import type { Todo } from '../../pages/TodoHome';
 import { TodoItem } from './TodoItem/TodoItem';
 import { Panel } from '../Panel/Panel';
 
@@ -12,6 +12,7 @@ interface TodoListProps {
   onCheckTodo: (id: Todo['id']) => void;
   onEdit: (id: Todo['id']) => void;
   onChangeTodo: ({ name, description }: Omit<Todo, 'id' | 'checked'>) => void;
+  onClickMore: (todo: Todo) => void
 }
 
 export const TodoList: React.FC<TodoListProps> = ({
@@ -20,7 +21,8 @@ export const TodoList: React.FC<TodoListProps> = ({
   onChangeTodo,
   onDeleteTodo,
   onCheckTodo,
-  onEdit
+  onEdit,
+  onClickMore
 }) => (
   <Box>
     {todoList.map((todo) => {
@@ -33,6 +35,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           onDeleteTodo={onDeleteTodo}
           onCheckTodo={onCheckTodo}
           onEdit={onEdit}
+          onClickMore={onClickMore}
         />
       );
     })}

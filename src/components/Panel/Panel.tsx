@@ -3,7 +3,7 @@ import { Add as AddIcon, FilterAlt as FilterAltIcon } from "@mui/icons-material"
 import { TextField, Paper, Button, Box, Stack } from "@mui/material";
 
 
-import type { Todo } from "../../App";
+import type { Todo } from "../../pages/TodoHome";
 
 const DEFAULT_TODO = { name: "", description: "" };
 

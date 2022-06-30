@@ -1,17 +1,16 @@
 import React from "react";
 import { IconButton, Box, Paper, Typography } from "@mui/material";
-import {
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-} from "@mui/icons-material";
+import { Delete as DeleteIcon, Edit as EditIcon, MoreVert as MoreVertIcon } from "@mui/icons-material";
 
-import type { Todo } from "../../../App";
+import type { Todo } from "../../../pages/TodoHome";
+import { Link } from "react-router-dom";
 
 interface TodoItemProps {
   todo: Todo;
   onDeleteTodo: (id: Todo["id"]) => void;
   onCheckTodo: (id: Todo["id"]) => void;
   onEdit: (id: Todo["id"]) => void;
+  onClickMore: (todo: Todo) => void
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
@@ -19,6 +18,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   onDeleteTodo,
   onCheckTodo,
   onEdit,
+  onClickMore
 }) => (
   <Paper
     elevation={1}
@@ -58,6 +58,11 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       </Typography>
     </Box>
     <Box display="flex" justifyContent="flex-end">
+      <Link to="/TodoAbout">
+        <IconButton color="primary" aria-label="edit" onClick={() => onClickMore(todo)}>
+          <MoreVertIcon />
+        </IconButton>
+      </Link>
       <IconButton
         onClick={() => onEdit(todo.id)}
         color="primary"
