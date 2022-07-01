@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { TodoAbout } from "./pages/TodoAbout";
 import {Todo, TodoHome} from "./pages/TodoHome";
 
-let DefaltTodo= {
+const DefaltTodo= {
   name: "",
   description: "",
   checked: false,

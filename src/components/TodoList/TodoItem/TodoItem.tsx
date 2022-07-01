@@ -24,7 +24,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
     elevation={1}
     sx={{
       marginBottom: "15px",
-      width: "100%",
       padding: "15px 20px",
       borderRadius: 1,
       gap: 2,
@@ -59,7 +58,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
     </Box>
     <Box display="flex" justifyContent="flex-end">
       <Link to="/TodoAbout">
-        <IconButton color="primary" aria-label="edit" onClick={() => onClickMore(todo)}>
+        <IconButton color="primary" aria-label="more" onClick={() => onClickMore(todo)}>
           <MoreVertIcon />
         </IconButton>
       </Link>

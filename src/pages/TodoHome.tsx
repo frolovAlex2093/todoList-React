@@ -28,7 +28,6 @@ export const TodoHome: React.FC<TodoHomeProps> = ({onClickMore}) => {
       .then((todoList) => {
         setTodoList(todoList);
         setLoading(false);
-        console.log(todoList);
       });
   }, []);
 
@@ -122,15 +121,16 @@ export const TodoHome: React.FC<TodoHomeProps> = ({onClickMore}) => {
 
   return (
     <Box
+    
       marginTop={5}
       height="100%"
       display="flex"
       justifyContent="center"
       alignContent="center"
     >
-      <Box display="flex" flexDirection="column" width="500px">
+      <Box display="flex" flexDirection="column" maxWidth="600px" width="100%" padding="0 15px 0 15px" >
         <Header todoCount={todoList.length} />
-        <Panel mode="add" onAddTodo={onAddTodo} onClickFilter={onClickFilter} />
+        <Panel mode="add" onAddTodo={onAddTodo} onClickFilter={onClickFilter}/>
         {loading && <Loader />}
         {todoList.length ? (
           <TodoList

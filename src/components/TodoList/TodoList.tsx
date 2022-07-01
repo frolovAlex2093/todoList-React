@@ -27,7 +27,7 @@ export const TodoList: React.FC<TodoListProps> = ({
   <Box>
     {todoList.map((todo) => {
       if (todo.id === editTodoId)
-        return <Panel mode='edit' onChangeTodo={onChangeTodo} editTodo={todo} />;
+        return <Panel mode='edit' onChangeTodo={onChangeTodo} editTodo={todo} key={todo.id}/>;
       return (
         <TodoItem
           key={todo.id}

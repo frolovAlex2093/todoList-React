@@ -45,7 +45,6 @@ export const Panel: React.FC<PanelProps> = (props) => {
       elevation={1}
       sx={{
         marginBottom: "15px",
-        width: "100%",
         padding: "15px 20px",
         borderRadius: 1,
         gap: 2,
@@ -72,7 +71,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
           ""
         ) : (
           <Button startIcon={<FilterAltIcon />} variant="outlined" onClick={props.onClickFilter} sx={{marginRight: "5px"}}>
-            filter
+            FILTER
           </Button>
         )}
         <Button startIcon={<AddIcon />} variant="outlined" onClick={onClick}>

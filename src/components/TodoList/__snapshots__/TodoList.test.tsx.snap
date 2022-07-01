@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoList component TodoList snapshot 1`] = `
+Array [
+  Object {
+    "checked": false,
+    "description": "test description 1",
+    "id": 1,
+    "name": "test name 1",
+  },
+  Object {
+    "checked": false,
+    "description": "test description 2",
+    "id": 2,
+    "name": "test name 2",
+  },
+  Object {
+    "checked": false,
+    "description": "test description 3",
+    "id": 3,
+    "name": "test name 3",
+  },
+]
+`;
