@@ -1,19 +1,19 @@
-import { render, screen } from "@testing-library/react";
-import { Header } from "./Header";
+import { render, screen } from '@testing-library/react';
 
-const todoCount = 4
+import { Header } from './Header';
 
-describe("Header component", () => {
-    it("Header render", () => {
-      render(<Header todoCount={todoCount}/>);
-  
-      expect(screen.getByText("Todo list 4 task(s)")).toBeInTheDocument;
-    });
+const todoCount = 4;
 
-    it("Header snapshot", () => {
-        const header = render(<Header todoCount={todoCount}/>);
+describe('Header component', () => {
+  it('Header render', () => {
+    render(<Header todoCount={todoCount} />);
 
-        expect(header).toMatchSnapshot()
-    })
+    expect(screen.getByText('Todo list 4 task(s)')).toBeInTheDocument;
   });
-  
+
+  it('Header snapshot', () => {
+    const header = render(<Header todoCount={todoCount} />);
+
+    expect(header).toMatchSnapshot();
+  });
+});

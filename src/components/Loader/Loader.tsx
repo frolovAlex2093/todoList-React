@@ -1,8 +1,9 @@
-import { Box } from '@mui/material'
-import React from 'react'
+import React from 'react';
 
-export const Loader: React.FC = () => {
-  return (
-    <Box display='flex' justifyContent='center'><Box className="lds-dual-ring"></Box></Box>
-  )
-}
+import { Box } from '@mui/material';
+
+export const Loader: React.FC = () => (
+    <Box display='flex' justifyContent='center'>
+      <Box className='lds-dual-ring' />
+    </Box>
+  );

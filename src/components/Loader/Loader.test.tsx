@@ -1,16 +1,17 @@
-import { render, screen } from "@testing-library/react";
-import { Loader } from "./Loader";
+import { render } from '@testing-library/react';
 
-describe("Loader component", () => {
-  it("Loader render", () => {
+import { Loader } from './Loader';
+
+describe('Loader component', () => {
+  it('Loader render', () => {
     render(<Loader />);
 
-    const loader = document.querySelector(".lds-dual-ring");
+    const loader = document.querySelector('.lds-dual-ring');
     expect(loader).toBeInTheDocument;
   });
 
-  it("Loader snapshot", ()=>{
+  it('Loader snapshot', () => {
     const loader = render(<Loader />);
-    expect(loader).toMatchSnapshot()
-  })
+    expect(loader).toMatchSnapshot();
+  });
 });
