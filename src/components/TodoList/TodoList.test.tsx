@@ -37,10 +37,10 @@ describe("TodoList component", () => {
       <MemoryRouter>
         <TodoList
           todoList={todoList}
-          onDeleteTodo={onDeleteTodo}
-          onCheckTodo={onCheckTodo}
-          onEdit={onEdit}
-          onClickMore={onClickMore}
+          
+          
+          
+          
           editTodoId={editTodoId}
           onChangeTodo={onChangeTodo}
         />
@@ -59,10 +59,6 @@ describe("TodoList component", () => {
         <MemoryRouter>
           <TodoList
             todoList={todoList}
-            onDeleteTodo={onDeleteTodo}
-            onCheckTodo={onCheckTodo}
-            onEdit={onEdit}
-            onClickMore={onClickMore}
             editTodoId={editTodoId}
             onChangeTodo={onChangeTodo}
           />

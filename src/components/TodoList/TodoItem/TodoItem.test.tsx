@@ -10,22 +10,18 @@ const todoTest = {
   checked: false,
 };
 
-const onDeleteTodoTest = jest.fn();
-const onCheckTodoTest = jest.fn();
-const onEditTest = jest.fn();
-const onClickMoreTest = jest.fn();
+import { Context } from "../../../pages/TodoHome";
+
+const onDeleteTodo = jest.fn();
+const onCheckTodo = jest.fn();
+const onEdit = jest.fn();
+const onClickMore = jest.fn();
 
 describe("TodoItem component", () => {
   it("TodoItem render", () => {
     render(
       <MemoryRouter>
-        <TodoItem
-          todo={todoTest}
-          onDeleteTodo={onDeleteTodoTest}
-          onCheckTodo={onCheckTodoTest}
-          onEdit={onEditTest}
-          onClickMore={onClickMoreTest}
-        />
+        <TodoItem todo={todoTest} />
       </MemoryRouter>
     );
 
@@ -36,13 +32,11 @@ describe("TodoItem component", () => {
   it("buttons work", () => {
     render(
       <MemoryRouter>
-        <TodoItem
-          todo={todoTest}
-          onDeleteTodo={onDeleteTodoTest}
-          onCheckTodo={onCheckTodoTest}
-          onEdit={onEditTest}
-          onClickMore={onClickMoreTest}
-        />
+        <Context.Provider
+          value={{ onCheckTodo, onDeleteTodo, onEdit, onClickMore }}
+        >
+          <TodoItem todo={todoTest} />
+        </Context.Provider>
       </MemoryRouter>
     );
 
@@ -51,25 +45,23 @@ describe("TodoItem component", () => {
     userEvent.click(screen.getByRole("button", { name: "more" }));
     userEvent.click(screen.getByText("test name"));
 
-    expect(onDeleteTodoTest).toHaveBeenCalled();
-    expect(onCheckTodoTest).toHaveBeenCalled();
-    expect(onEditTest).toHaveBeenCalled();
-    expect(onClickMoreTest).toHaveBeenCalled();
+    expect(onDeleteTodo).toHaveBeenCalled();
+    expect(onCheckTodo).toHaveBeenCalled();
+    expect(onEdit).toHaveBeenCalled();
+    expect(onClickMore).toHaveBeenCalled();
   });
 
   it("TodoItem snapshot", () => {
     const todoItem = render(
-        <MemoryRouter>
-          <TodoItem
-            todo={todoTest}
-            onDeleteTodo={onDeleteTodoTest}
-            onCheckTodo={onCheckTodoTest}
-            onEdit={onEditTest}
-            onClickMore={onClickMoreTest}
-          />
-        </MemoryRouter>
-      );
+      <MemoryRouter>
+        <Context.Provider
+          value={{ onCheckTodo, onDeleteTodo, onEdit, onClickMore }}
+        >
+          <TodoItem todo={todoTest} />
+        </Context.Provider>
+      </MemoryRouter>
+    );
 
-      expect(todoItem).toMatchSnapshot()
-  })
+    expect(todoItem).toMatchSnapshot();
+  });
 });

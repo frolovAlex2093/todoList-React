@@ -7,20 +7,31 @@ let filter: boolean = true;
 let maxId: number = 1;
 
 export type Todo = {
-    id: number;
-    name: string;
-    description: string;
-    checked: boolean;
-  };
+  id: number;
+  name: string;
+  description: string;
+  checked: boolean;
+};
 
-  interface TodoHomeProps{
-    onClickMore: (todo: Todo) => void
-  }
+interface TodoHomeProps {
+  onClickMore: (todo: Todo) => void;
+}
 
-export const TodoHome: React.FC<TodoHomeProps> = ({onClickMore}) => {
+export interface ContextProps{
+  onCheckTodo?: (id: Todo["id"]) => void;
+  onDeleteTodo?: (id: Todo["id"]) => void;
+  onEdit?: (id: Todo["id"]) => void;
+  onClickMore?: (todo: Todo) => void;
+}
+
+export const Context = React.createContext<Partial<ContextProps>>({});
+
+export const TodoHome: React.FC<TodoHomeProps> = ({ onClickMore }) => {
   const [editTodoId, setEditTodoId] = React.useState<number | null>(null);
   const [todoList, setTodoList] = React.useState<Todo[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
+
+  
 
   useEffect(() => {
     fetch("https://62b841c8f4cb8d63df5aec8a.mockapi.io/api/v1/todo")
@@ -30,7 +41,6 @@ export const TodoHome: React.FC<TodoHomeProps> = ({onClickMore}) => {
         setLoading(false);
       });
   }, []);
-
 
   const onClickFilter = () => {
     const sortTodoList = [...todoList].sort((x, y) => {
@@ -120,39 +130,46 @@ export const TodoHome: React.FC<TodoHomeProps> = ({onClickMore}) => {
   };
 
   return (
-    <Box
-    
-      marginTop={5}
-      height="100%"
-      display="flex"
-      justifyContent="center"
-      alignContent="center"
-    >
-      <Box display="flex" flexDirection="column" maxWidth="600px" width="100%" padding="0 15px 0 15px" >
-        <Header todoCount={todoList.length} />
-        <Panel mode="add" onAddTodo={onAddTodo} onClickFilter={onClickFilter}/>
-        {loading && <Loader />}
-        {todoList.length ? (
-          <TodoList
-            editTodoId={editTodoId}
-            todoList={todoList}
-            onDeleteTodo={onDeleteTodo}
-            onCheckTodo={onCheckTodo}
-            onEdit={onEdit}
-            onChangeTodo={onChangeTodo}
-            onClickMore={onClickMore}
+    <Context.Provider value={{onCheckTodo, onDeleteTodo, onEdit, onClickMore}}>
+      <Box
+        marginTop={5}
+        height="100%"
+        display="flex"
+        justifyContent="center"
+        alignContent="center"
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          maxWidth="600px"
+          width="100%"
+          padding="0 15px 0 15px"
+        >
+          <Header todoCount={todoList.length} />
+          <Panel
+            mode="add"
+            onAddTodo={onAddTodo}
+            onClickFilter={onClickFilter}
           />
-        ) : loading ? null : (
-          <Typography
-            sx={{ fontSize: 35 }}
-            variant="h1"
-            component="h1"
-            gutterBottom
-          >
-            No Todo
-          </Typography>
-        )}
+          {loading && <Loader />}
+          {todoList.length ? (
+            <TodoList
+              editTodoId={editTodoId}
+              todoList={todoList}
+              onChangeTodo={onChangeTodo}
+            />
+          ) : loading ? null : (
+            <Typography
+              sx={{ fontSize: 35 }}
+              variant="h1"
+              component="h1"
+              gutterBottom
+            >
+              No Todo
+            </Typography>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </Context.Provider>
   );
-}
+};
